@@ -1,4 +1,4 @@
-"""Step 04b: educational attainment, distance and formal care-seeking.
+"""Step 04b: educational attainment, distance and formal care-seeking .
 
 Distances: IPS sites open by mid-2018 on the 2018 road network, as in step 04.
 
@@ -126,6 +126,10 @@ def main():
     summ["ill_with_response"] = int(len(ill))
     _, n_ref, d = a04.care_model(ill, b, "d_ips", "stratum")
     summ["ill_in_stratum_model"] = int(n_ref)
+    hh_adult = per[per.adult25].groupby(KEY).size().rename("n_adult25")
+    miss = d[d.climate_lvl.isna()].merge(hh_adult, left_on=KEY, right_index=True, how="left")
+    summ["ill_without_climate"] = {"total": int(len(miss)), "no_member_25plus": int(miss.n_adult25.isna().sum()),
+                                   "members_25plus_level_unknown": int(miss.n_adult25.notna().sum())}
     d = d[d.climate_lvl.notna()].copy()
     summ["ill_with_climate"] = int(len(d))
     d["climate"] = pd.Categorical(d.climate_lvl.map(CLIMATE), categories=["tertiary", "secondary", "primary or less"])

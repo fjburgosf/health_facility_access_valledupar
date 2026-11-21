@@ -1,0 +1,54 @@
+{
+ "ipm_manzana_valledupar.geojson": {
+  "url": "https://services5.arcgis.com/PzzAFzyM92dtPsCS/ArcGIS/rest/services/VULNRB_IPMxMZ/FeatureServer/17/query",
+  "where": "COD_MPIO='20001'",
+  "features": 5723,
+  "downloaded_utc": "2026-11-19T23:59:04.047683+00:00",
+  "sha256": "684a57b5cdedd5ff92ff2918696e7eebf36ae9ba4efda8e99e3744408b712131",
+  "terms": "DANE"
+ },
+ "osm_health.json": {
+  "url": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:300];(nwr[\"amenity\"~\"^(hospital|clinic|doctors)$\"](10.40590,-73.30764,10.51685,-73.20994);nwr[\"healthcare\"~\"^(hospital|clinic|centre|doctor)$\"](10.40590,-73.30764,10.51685,-73.20994););out center tags;",
+  "elements": 20,
+  "downloaded_utc": "2026-11-19T23:59:04.047683+00:00",
+  "sha256": "7d5724792ac8e0020681c28b25a24f92f0c62a8953411887404714dadbb55f65",
+  "licence": "ODbL (OpenStreetMap contributors)"
+ },
+ "osm_roads.json": {
+  "url": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:600];way[\"highway\"~\"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|pedestrian|track|footway|path|steps|cycleway|road|motorway_link|trunk_link|primary_link|secondary_link|tertiary_link)$\"](10.40590,-73.30764,10.51685,-73.20994);out geom;",
+  "elements": 4500,
+  "downloaded_utc": "2026-11-19T23:59:04.047683+00:00",
+  "sha256": "f53ccb57e5dfbf9232bbdf531989c26f4dc42896f7ac18487ba0719eb3c05cfa",
+  "licence": "ODbL (OpenStreetMap contributors)"
+ },
+ "reps_valledupar_institutional.json": {
+  "url": "https://www.datos.gov.co/resource/c36g-9fc2.json?%24where=upper%28municipiosededesc%29%3D%27VALLEDUPAR%27&%24limit=50000",
+  "rows_total": 767,
+  "rows_kept": 345,
+  "downloaded_utc": "2026-11-19T23:59:04.047683+00:00",
+  "sha256": "39a96ecbad1693edf906d92c95707a8b9aab90e2c1230ca1afcc970dc9e24f53",
+  "licence": "CC BY-SA 4.0"
+ },
+ "osm_roads_2018.json": {
+  "url": "https://overpass-api.de/api/interpreter",
+  "query": "[out:json][timeout:900][date:\"2018-07-01T00:00:00Z\"];way[\"highway\"~\"^(motorway|trunk|primary|secondary|tertiary|unclassified|residential|living_street|service|pedestrian|track|footway|path|steps|cycleway|road|motorway_link|trunk_link|primary_link|secondary_link|tertiary_link)$\"](10.40590,-73.30764,10.51685,-73.20994);out geom;",
+  "elements": 3035,
+  "downloaded_utc": "2026-11-21T22:13:44.552436+00:00",
+  "sha256": "a180138c914fea170bb326a796c19f0ad38e367ecc055b068c4caaae58ad1558",
+  "licence": "ODbL (OpenStreetMap contributors)"
+ },
+ "reps_portal_2026-11-21/sedes_institucional.csv": {
+  "url": "https://prestadores.minsalud.gov.co/habilitacion/",
+  "description": "REPS portal, Registro actual - Sedes, Cesar/Valledupar, IPS; text export (guest access), institutional fields only (manager, phone, fax and e-mail removed)",
+  "retrieved": "2026-11-21",
+  "sha256": "db66ab8ee30cbe9a6a189d763368fee9c0548d4867089ed7c009284184cf8f4d"
+ },
+ "reps_portal_2026-11-21/servicios_flags_sede.txt": {
+  "url": "https://prestadores.minsalud.gov.co/habilitacion/",
+  "description": "REPS portal, Registro actual - Servicios, Cesar/Valledupar, IPS; read from the result grid (3150 of 3154 records) and summarised per site",
+  "retrieved": "2026-11-21",
+  "sha256": "16019fcf2aa848d097f1fd8a392d3dc03eeb2da4df8202d4e46a7dcda1920116"
+ }
+}

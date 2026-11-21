@@ -3,7 +3,18 @@ data/*
 !data/raw/
 data/raw/*
 !data/raw/reps_portal_2026-11-21/
-results/
+!data/raw/PROVENANCE.json
+# only aggregated results are published (no block-level files)
+results/*
+!results/summary.json
+!results/quintiles.csv
+!results/care_models.csv
+!results/care_tertiles.csv
+!results/care_ipm_by_distance.csv
+!results/network_2018_audit.json
+!results/education_summary.json
+!results/education_quintiles.csv
+!results/education_care_models.csv
 .venv/
 __pycache__/
 *.pyc

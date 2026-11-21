@@ -41,7 +41,8 @@ def moran(v, nb):
 
 
 def bivariate_lisa(x, y, nb, perms=999, seed=SEED):
-    """Local Moran of x against the spatial lag of y; conditional permutation pseudo p-values (two-sided)."""
+    """Local Moran of x against the spatial lag of y; conditional permutation pseudo p-values (two-sided), with the
+    k neighbours of each permutation drawn without replacement."""
     rng = np.random.default_rng(seed)
     zx, zy = z(x), z(y)
     k = nb.shape[1]
@@ -51,6 +52,10 @@ def bivariate_lisa(x, y, nb, perms=999, seed=SEED):
     for i in range(n):
         others = np.delete(np.arange(n), i)
         draws = rng.choice(others, size=(perms, k), replace=True)
+        dup = np.array([len(set(row)) < k for row in draws])
+        while dup.any():  # each permutation draws k distinct blocks (sampling without replacement)
+            draws[dup] = rng.choice(others, size=(int(dup.sum()), k), replace=True)
+            dup = np.array([len(set(row)) < k for row in draws])
         Ip = zx[i] * zy[draws].mean(axis=1)
         count[i] = (np.abs(Ip) >= abs(I[i])).sum()
     p = (count + 1) / (perms + 1)
@@ -130,6 +135,7 @@ def main():
         "ipm_mean_w": wavg(g, "ipm"), "d_ips_w": wavg(g, "d_ips"), "d_hosp_w": wavg(g, "d_hosp"),
         "share_gt1km": np.average(g.d_ips > 1000, weights=g.persons),
         "d_ips2026_w": wavg(g, "d_ips2026"),
+        "d_s18_r26_w": wavg(g, "d_all2018_osm2026"), "d_s26_r18_w": wavg(g, "d_all2026_osm2018"),
         "share_hosp_gt2km": np.average(g.d_hosp > 2000, weights=g.persons)}), include_groups=False)
     q.to_csv(RES / "quintiles.csv")
     for col in ("d_ips", "d_hosp", "e_ips", "d_ips2026", "d_gp2018_osm2018", "d_all2018_osm2026"):
@@ -158,6 +164,7 @@ def main():
         I, p, cl = bivariate_lisa(b.ipm.values, b.d_ips.values, nb)
         if k == 8:
             fdr = bh(p)
+            lab_fdr8 = np.where(fdr, cl, "Not significant")
             summ["lisa_k8_fdr"] = {c: {"blocks": int(((cl == c) & fdr).sum()), "persons": int(b.persons[(cl == c) & fdr].sum())}
                                    for c in ["High-High", "High-Low", "Low-High", "Low-Low"]}
             summ["lisa_k8_hh_own"] = {"ipm_above_mean": int(((cl == "High-High") & (p < 0.05)).sum()),
@@ -175,6 +182,7 @@ def main():
     summ["bimoran_hosp_k8"] = global_bivariate(b.ipm.values, b.d_hosp.values, nbh)
     out = b[["block", "x", "y", "ipm", "persons", "d_ips", "d_hosp"]].copy()
     out["lisa_k8"] = lisas[8]
+    out["lisa_k8_fdr"] = lab_fdr8
     out["lisa_hosp_k8"] = labh
     out.to_csv(RES / "lisa.csv", index=False)
     hh = out[out.lisa_k8 == "High-High"]
@@ -231,8 +239,15 @@ def main():
                                                        dist_min=("dist_km", "min"), dist_max=("dist_km", "max"))
             iq = pd.qcut(d.ipm.rank(method="first"), 3, labels=["low", "mid", "high"])
             summ["formal_by_ipm_tertile"] = d.groupby(iq, observed=True).formal.mean().round(4).to_dict()
-            g = d.assign(iq=iq).groupby(["iq", "tert"], observed=True).formal.agg(["mean", "size"])
-            g["se"] = np.sqrt(g["mean"] * (1 - g["mean"]) / g["size"])
+            dd = d.assign(iq=iq)
+            rows_se = []
+            for (iq_, t_), gg in dd.groupby(["iq", "tert"], observed=True):
+                pbar = gg.formal.mean()
+                cs = gg.groupby("block").formal.agg(["sum", "size"])
+                ncl = len(cs)
+                var = (ncl / (ncl - 1)) * ((cs["sum"] - pbar * cs["size"]) ** 2).sum() / len(gg) ** 2
+                rows_se.append({"iq": iq_, "tert": t_, "mean": pbar, "size": len(gg), "blocks": ncl, "se": float(np.sqrt(var))})
+            g = pd.DataFrame(rows_se).set_index(["iq", "tert"])  # SE clustered by block
             g.reset_index().to_csv(RES / "care_ipm_by_distance.csv", index=False)
             summ["ill_in_model"] = int(n)
             summ["formal_share_model"] = float(d.formal.mean())
@@ -240,6 +255,9 @@ def main():
     jit = jit[jit.model.str.startswith("stratum_jit") & (jit.term == "dist_km")]
     summ["jitter_or_range"] = {r: [float(jit[jit.model.str.contains(f"jit{r}_")]["or"].min()),
                                    float(jit[jit.model.str.contains(f"jit{r}_")]["or"].max())] for r in (100, 250)}
+    summ["jitter_or_p2575"] = {r: [float(jit[jit.model.str.contains(f"jit{r}_")]["or"].quantile(q_)) for q_ in (0.025, 0.5, 0.975)]
+                               for r in (100, 250)}
+    summ["jitter_draws"] = int(jit.model.str.contains("jit100_").sum())
     summ["jitter_spearman_range"] = {r: [float(min(spearmanr(b.ipm, b[c])[0] for c in b.columns if c.startswith(f"d_jit{r}_"))),
                                          float(max(spearmanr(b.ipm, b[c])[0] for c in b.columns if c.startswith(f"d_jit{r}_")))]
                                      for r in (100, 250)}

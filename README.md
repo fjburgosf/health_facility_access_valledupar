@@ -9,8 +9,9 @@ Distances are computed with the health facilities that were open at the time of 
 institutions, IPS, open by 1 July 2018 according to the national registry of health providers, REPS) and with the
 OpenStreetMap road network as it was on that date. The 2026 network is kept for comparison.
 
-The repository includes only the analysis scripts and two small files with institutional data of the REPS. It does
-not include the census microdata.
+The repository includes the analysis scripts, two small files with institutional data of the REPS, the provenance
+record of the downloaded sources (`data/raw/PROVENANCE.json`, with SHA-256 values) and the aggregated results of the
+study (`results/`). It does not include the census microdata or block-level results.
 
 ## Data
 
@@ -77,6 +78,7 @@ files used in the study (their SHA-256 values are recorded in `data/raw/PROVENAN
 
 ## Uncertainty
 
-Local Moran statistics use 999 conditional permutations (seed 20261120) and the Benjamini-Hochberg false discovery
-rate. Logistic models use standard errors clustered by block (and by census section and sector in sensitivity
+Local Moran statistics use 999 conditional permutations, with the neighbours of each permutation drawn without
+replacement (seed 20261120), and the Benjamini-Hochberg false discovery rate. Several sites snapped to the same road
+node keep the minimum connection distance. The random displacement of the sites uses 50 draws per radius. Logistic models use standard errors clustered by block (and by census section and sector in sensitivity
 analyses). Predicted probabilities use the delta method.

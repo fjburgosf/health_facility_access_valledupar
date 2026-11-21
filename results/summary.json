@@ -1,0 +1,223 @@
+{
+ "n_blocks": 3827,
+ "persons": 399773,
+ "spearman_d_ips": {
+  "rho": 0.3198403433318685,
+  "p": 9.335430675320083e-92
+ },
+ "spearman_d_hosp": {
+  "rho": 0.14937044932936183,
+  "p": 1.5485892836026178e-20
+ },
+ "spearman_e_ips": {
+  "rho": 0.32777279518720803,
+  "p": 1.558831329940296e-96
+ },
+ "spearman_d_ips2026": {
+  "rho": 0.34909708358084274,
+  "p": 4.209478461342999e-110
+ },
+ "spearman_d_gp2018_osm2018": {
+  "rho": 0.1984356898056109,
+  "p": 2.773738280638455e-35
+ },
+ "spearman_d_all2018_osm2026": {
+  "rho": 0.3163035929655874,
+  "p": 1.1324297491024686e-89
+ },
+ "spearman_strat1_d_ips": {
+  "rho": 0.32094803933342225,
+  "p": 2.0494997279779482e-92
+ },
+ "bimoran_strat1_k8": 0.2696722524294223,
+ "d_ips_w_all": 1053.5968040082694,
+ "d_ips2026_w_all": 941.0405336502298,
+ "share_gt1km_2026": 0.36301601158657537,
+ "d_hosp_w_all": 1527.7621417627993,
+ "share_gt1km_all": 0.4602812095864403,
+ "moran_ipm_k8": 0.6568007894374487,
+ "moran_dips_k8": 0.9539022658511069,
+ "bimoran_k8": 0.2859491905248098,
+ "p_moran_ipm_k8": 0.001,
+ "p_moran_dips_k8": 0.001,
+ "p_bimoran_k8": 0.001,
+ "lisa_k8_fdr": {
+  "High-High": {
+   "blocks": 335,
+   "persons": 47151
+  },
+  "High-Low": {
+   "blocks": 154,
+   "persons": 15418
+  },
+  "Low-High": {
+   "blocks": 244,
+   "persons": 29448
+  },
+  "Low-Low": {
+   "blocks": 577,
+   "persons": 41903
+  }
+ },
+ "lisa_k8_hh_own": {
+  "ipm_above_mean": 413,
+  "own_distance_above_mean": 413
+ },
+ "lisa_k8": {
+  "High-High": {
+   "blocks": 413,
+   "persons": 56448
+  },
+  "High-Low": {
+   "blocks": 250,
+   "persons": 26910
+  },
+  "Low-High": {
+   "blocks": 301,
+   "persons": 36162
+  },
+  "Low-Low": {
+   "blocks": 769,
+   "persons": 59065
+  },
+  "Not significant": {
+   "blocks": 2094,
+   "persons": 221188
+  }
+ },
+ "moran_ipm_k4": 0.6756937661493848,
+ "moran_dips_k4": 0.9703757530029045,
+ "bimoran_k4": 0.2883740294381576,
+ "lisa_k4": {
+  "High-High": {
+   "blocks": 298,
+   "persons": 42492
+  },
+  "High-Low": {
+   "blocks": 107,
+   "persons": 10295
+  },
+  "Low-High": {
+   "blocks": 222,
+   "persons": 26864
+  },
+  "Low-Low": {
+   "blocks": 445,
+   "persons": 31071
+  },
+  "Not significant": {
+   "blocks": 2755,
+   "persons": 289051
+  }
+ },
+ "moran_ipm_k12": 0.6424934244899954,
+ "moran_dips_k12": 0.9439081491332352,
+ "bimoran_k12": 0.28553603683817647,
+ "lisa_k12": {
+  "High-High": {
+   "blocks": 460,
+   "persons": 62180
+  },
+  "High-Low": {
+   "blocks": 324,
+   "persons": 35434
+  },
+  "Low-High": {
+   "blocks": 346,
+   "persons": 42222
+  },
+  "Low-Low": {
+   "blocks": 924,
+   "persons": 72568
+  },
+  "Not significant": {
+   "blocks": 1773,
+   "persons": 187369
+  }
+ },
+ "lisa_hosp_k8": {
+  "High-High": {
+   "blocks": 315,
+   "persons": 44364
+  },
+  "High-Low": {
+   "blocks": 318,
+   "persons": 35797
+  },
+  "Low-High": {
+   "blocks": 406,
+   "persons": 42190
+  },
+  "Low-Low": {
+   "blocks": 625,
+   "persons": 47135
+  },
+  "Not significant": {
+   "blocks": 2163,
+   "persons": 230287
+  }
+ },
+ "bimoran_hosp_k8": 0.10415828234516929,
+ "hh_mean_ipm": 48.229892117367136,
+ "hh_mean_dips": 2069.107597760872,
+ "formal_by_ipm_tertile": {
+  "low": 0.7759,
+  "mid": 0.6933,
+  "high": 0.6126
+ },
+ "ill_in_model": 47734,
+ "formal_share_model": 0.6939288557422383,
+ "predicted_stratum": {
+  "0.5": {
+   "p": 0.7026022768456528,
+   "lo": 0.6930036239623656,
+   "hi": 0.71220092972894
+  },
+  "1.0": {
+   "p": 0.6950336314008467,
+   "lo": 0.687513461565558,
+   "hi": 0.7025538012361354
+  },
+  "2.0": {
+   "p": 0.6795935292445707,
+   "lo": 0.6688094588413489,
+   "hi": 0.6903775996477926
+  }
+ },
+ "residual_moran_k8": 0.08142371122875527,
+ "p_residual_moran_k8": 0.001,
+ "residual_blocks": 3569,
+ "jitter_or_range": {
+  "100": [
+   0.9127823604730924,
+   0.9467965032323243
+  ],
+  "250": [
+   0.9081171105398838,
+   0.9713804083894505
+  ]
+ },
+ "jitter_or_p2575": {
+  "100": [
+   0.916321262551287,
+   0.9298960470083539,
+   0.9441386159031689
+  ],
+  "250": [
+   0.9107500484568593,
+   0.9358649670433106,
+   0.9625986873662474
+  ]
+ },
+ "jitter_draws": 50,
+ "jitter_spearman_range": {
+  "100": [
+   0.3010955074316256,
+   0.3365190784863066
+  ],
+  "250": [
+   0.2412913529486057,
+   0.346919345664863
+  ]
+ }
+}

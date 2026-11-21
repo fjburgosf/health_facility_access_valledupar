@@ -80,6 +80,15 @@ def census():
     return per
 
 
+def sym_min_csr(I, J, W, n):
+    """Symmetric sparse graph keeping the minimum weight of repeated (i, j) pairs; scipy would add them up."""
+    I, J, W = np.r_[I, J], np.r_[J, I], np.r_[W, W]
+    order = np.lexsort((W, J, I))
+    I, J, W = I[order], J[order], W[order]
+    first = np.r_[True, (I[1:] != I[:-1]) | (J[1:] != J[:-1])]
+    return coo_matrix((W[first], (I[first], J[first])), shape=(n, n)).tocsr()
+
+
 def graph():
     d = json.loads((RAW / "osm_roads.json").read_text(encoding="utf-8"))
     ids, coords, I, J, W = {}, [], [], [], []
@@ -98,7 +107,7 @@ def graph():
             J.append(ids[k2])
             W.append(float(np.hypot(*(p2 - p1))))
     n = len(coords)
-    A = coo_matrix((W + W, (I + J, J + I)), shape=(n, n)).tocsr()
+    A = sym_min_csr(np.array(I), np.array(J), np.array(W), n)
     ncomp, lab = connected_components(A, directed=False)
     big = np.bincount(lab).argmax()
     return A, np.array(coords), lab == big
@@ -111,12 +120,9 @@ def network_distance(A, C, keep, sources, targets):
     ds, js = tree.query(sources)
     dt, jt = tree.query(targets)
     n = A.shape[0]
-    rows = np.full(len(js), n)
     B = A.tocoo()
-    I = np.r_[B.row, rows, nodes[js]]
-    J = np.r_[B.col, nodes[js], rows]
-    W = np.r_[B.data, ds, ds]
-    G = coo_matrix((W, (I, J)), shape=(n + 1, n + 1)).tocsr()
+    # virtual source node n joined to the node of every site; several sites on one node keep the minimum distance
+    G = sym_min_csr(np.r_[B.row, np.full(len(js), n)], np.r_[B.col, nodes[js]], np.r_[B.data, ds], n + 1)
     dist = dijkstra(G, directed=False, indices=n)
     return dist[nodes[jt]] + dt, dt
 

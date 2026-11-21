@@ -7,7 +7,7 @@
 - Primary care: sites with general or family medicine outpatient consultation (REPS services 328 or 325).
 - Emergency: sites with an emergency service (1102).
 - Road graphs: OpenStreetMap 2026 (step 01) and 2018 (step 01b).
-- Geocoding sensitivity: the 2018 sites displaced at random within 100 m and 250 m (five draws each, seed 20261121).
+- Geocoding sensitivity: the 2018 sites displaced at random within 100 m and 250 m (50 draws each, seed 20261121).
 
 Output: data/processed/blocks_2018.csv (network distances by block for each network and road year),
 results/network_2018_audit.json
@@ -54,7 +54,7 @@ def graph(path):
             J.append(ids[k2])
             W.append(float(np.hypot(*(p2 - p1))))
     n = len(coords)
-    A = coo_matrix((W + W, (I + J, J + I)), shape=(n, n)).tocsr()
+    A = a03.sym_min_csr(np.array(I), np.array(J), np.array(W), n)
     ncomp, lab = connected_components(A, directed=False)
     big = np.bincount(lab).argmax()
     return A, np.array(coords), lab == big
@@ -105,7 +105,7 @@ def main():
     F18 = nets["all2018"][["x", "y"]].values
     jitter = {}
     for radius in (100, 250):
-        for k in range(5):
+        for k in range(50):
             ang = rng.uniform(0, 2 * np.pi, len(F18))
             rad = radius * np.sqrt(rng.uniform(0, 1, len(F18)))
             jitter[f"jit{radius}_{k}"] = F18 + np.column_stack([rad * np.cos(ang), rad * np.sin(ang)])

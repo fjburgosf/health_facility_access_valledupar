@@ -1,0 +1,93 @@
+{
+ "adults25_total": 217607,
+ "adults25_valid_level": 214541,
+ "adults25_low_share": 0.2501433292470903,
+ "blocks": 3827,
+ "blocks_without_adult_level": 2,
+ "spearman_lowedu_d_ips": {
+  "rho": 0.2580171152868443,
+  "p": 3.208035460749043e-59
+ },
+ "spearman_lowedu_ipm": {
+  "rho": 0.7544339194373834,
+  "p": 0.0
+ },
+ "moran_lowedu_k8": 0.5969951978453144,
+ "bimoran_lowedu_k8": 0.22400974443310417,
+ "lisa_lowedu_k8": {
+  "High-High": {
+   "blocks": 426,
+   "persons": 57891
+  },
+  "High-Low": {
+   "blocks": 318,
+   "persons": 32607
+  },
+  "Low-High": {
+   "blocks": 293,
+   "persons": 35334
+  },
+  "Low-Low": {
+   "blocks": 705,
+   "persons": 53524
+  },
+  "Not significant": {
+   "blocks": 2083,
+   "persons": 220374
+  }
+ },
+ "hh_lowedu_mean": 41.207485417627815,
+ "hh_lowedu_dips": 2049.7795600677146,
+ "hh_overlap_with_ipm_hh": {
+  "blocks": 364,
+  "persons": 52113
+ },
+ "ill_with_response": 47734,
+ "ill_in_stratum_model": 47734,
+ "ill_without_climate": {
+  "total": 1255,
+  "no_member_25plus": 1181,
+  "members_25plus_level_unknown": 74
+ },
+ "ill_with_climate": 46479,
+ "ill_by_climate": {
+  "tertiary": 22433,
+  "secondary": 18287,
+  "primary or less": 5759
+ },
+ "formal_by_climate": {
+  "tertiary": 0.7277,
+  "secondary": 0.6578,
+  "primary or less": 0.6951
+ },
+ "age65_share_by_climate": {
+  "tertiary": 0.1148,
+  "secondary": 0.105,
+  "primary or less": 0.2686
+ },
+ "or_km_by_climate": {
+  "tertiary": {
+   "or": 0.9475313560020485,
+   "lo": 0.8862008185589187,
+   "hi": 1.0131063431729272,
+   "n": 22433
+  },
+  "secondary": {
+   "or": 0.9258548798430587,
+   "lo": 0.8748135514241414,
+   "hi": 0.9798742339253035,
+   "n": 18287
+  },
+  "primary or less": {
+   "or": 0.9335690356479921,
+   "lo": 0.8434055467618051,
+   "hi": 1.0333713688118127,
+   "n": 5759
+  }
+ },
+ "interaction_wald": {
+  "chi2": 0.3445157095148089,
+  "df": 2,
+  "p": 0.8417620928218658
+ }
+}
