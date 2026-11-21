@@ -1,0 +1,9 @@
+# census microdata and downloaded sources are not redistributed
+data/*
+!data/raw/
+data/raw/*
+!data/raw/reps_portal_2026-11-21/
+results/
+.venv/
+__pycache__/
+*.pyc
