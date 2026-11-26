@@ -1,46 +1,38 @@
-# Poverty, education and distance to health facilities in the city blocks of Valledupar, Colombia (2018): analysis code
+# Pobreza multidimensional, logro educativo, distancia a los servicios de salud y búsqueda de atención en las manzanas de Valledupar, Colombia
 
-This repository contains the analysis code used to study the joint spatial distribution of multidimensional poverty,
-adult educational attainment and network distance to health facilities in the urban blocks of Valledupar (Cesar,
-Colombia), and the association between distance and formal care-seeking among persons with a health problem in the
-2018 National Population and Housing Census (CNPV).
+Este repositorio contiene el código de análisis del artículo sometido a *Territorios*. En el estudio se examinó si la pobreza multidimensional, el bajo logro educativo adulto y la distancia a los servicios de salud se concentran en las mismas manzanas urbanas de Valledupar (Cesar, Colombia). También se analizó si la distancia se asocia con la búsqueda de atención formal entre las personas que declararon un problema de salud en el Censo Nacional de Población y Vivienda de 2018 (CNPV).
 
-Distances are computed with the health facilities that were open at the time of the census (sites of health care
-institutions, IPS, open by 1 July 2018 according to the national registry of health providers, REPS) and with the
-OpenStreetMap road network as it was on that date. The 2026 network is kept for comparison.
+Para estimar la distancia se utilizaron las sedes de instituciones prestadoras de servicios de salud (IPS) con fecha de apertura hasta el 1 de julio de 2018, según las fechas que figuran en el Registro Especial de Prestadores de Servicios de Salud (REPS) consultado en 2026. Se utilizó la red vial de OpenStreetMap del 1 de julio de 2018. Las distancias con la red y las sedes de 2026 se calcularon para la comparación.
 
-The repository includes the analysis scripts, two small files with institutional data of the REPS, the provenance
-record of the downloaded sources (`data/raw/PROVENANCE.json`, with SHA-256 values) and the aggregated results of the
-study (`results/`). It does not include the census microdata or block-level results.
+Se incluyen los scripts de análisis, dos archivos con datos institucionales del REPS, el registro de procedencia de las fuentes descargadas ([`data/raw/PROVENANCE.json`](data/raw/PROVENANCE.json), con sus valores SHA-256) y los [resultados agregados](results/). Los microdatos censales y los resultados por manzana se utilizan durante la ejecución local.
 
-## Data
+## Datos
 
-| Source | How to obtain it | Location |
+| Fuente | Obtención | Ubicación |
 |---|---|---|
-| IPM by city block, DANE (census multidimensional poverty, 2018) | downloaded by step 01 | `data/raw/ipm_manzana_valledupar.geojson` |
-| OpenStreetMap health facilities and roads (current) | downloaded by step 01 (Overpass API) | `data/raw/osm_health.json`, `osm_roads.json` |
-| OpenStreetMap roads on 1 July 2018 | downloaded by step 01b (Overpass API, historical query) | `data/raw/osm_roads_2018.json` |
-| REPS sites (open data, datos.gov.co `c36g-9fc2`) | downloaded by step 01; independent professionals are not stored | `data/raw/reps_valledupar_institutional.json` |
-| REPS query module: opening date and enabled services of the IPS sites of Valledupar | REPS portal (<https://prestadores.minsalud.gov.co/habilitacion/>, "Registro actual", guest access), retrieved on 2026-11-21; included here (institutional fields only) | `data/raw/reps_portal_2026-11-21/` |
-| CNPV 2018 microdata, Cesar | DANE microdata catalogue (ANDA), after registration; not redistributed | `data/cnpv2018_cesar_csv/` (`CNPV2018_5PER_A2_20.CSV`, `CNPV2018_1VIV_A2_20.CSV`, `CNPV2018_MGN_A2_20.CSV`) |
+| Índice de pobreza multidimensional (IPM) censal por manzana, DANE (2018) | Descarga en el paso 01 | `data/raw/ipm_manzana_valledupar.geojson` |
+| Equipamientos de salud y vías de OpenStreetMap (consulta actual) | Descarga en el paso 01 mediante la API de Overpass | `data/raw/osm_health.json`, `data/raw/osm_roads.json` |
+| Red vial de OpenStreetMap al 1 de julio de 2018 | Consulta histórica en el paso 01b mediante la API de Overpass | `data/raw/osm_roads_2018.json` |
+| Sedes del REPS (datos abiertos, conjunto `c36g-9fc2` de datos.gov.co) | Descarga en el paso 01. Se excluyen los registros de profesionales independientes | `data/raw/reps_valledupar_institutional.json` |
+| Fechas de apertura y servicios habilitados de las sedes de IPS de Valledupar | [Portal del REPS](https://prestadores.minsalud.gov.co/habilitacion/), módulo «Registro actual», con acceso de invitado. Se incluyen los campos institucionales consultados el 21 de noviembre de 2026 | `data/raw/reps_portal_2026-11-21/` |
+| Microdatos del CNPV 2018 para el Cesar | Catálogo del Archivo Nacional de Datos (ANDA) del DANE, previo registro | `data/cnpv2018_cesar_csv/` (`CNPV2018_5PER_A2_20.CSV`, `CNPV2018_1VIV_A2_20.CSV`, `CNPV2018_MGN_A2_20.CSV`) |
 
-`servicios_flags_sede.txt` summarises the enabled services of each site as a bit mask: 1 = general or family
-medicine outpatient consultation (services 328 or 325), 2 = emergency service (1102), 4 = adult or paediatric
-hospitalisation (129, 130).
+En `servicios_flags_sede.txt` se codifican los servicios habilitados de cada sede mediante una máscara de bits. El valor 1 corresponde a consulta externa de medicina general o familiar (servicios 328 o 325), el 2 a urgencias (1102) y el 4 a hospitalización de adultos o pediátrica (129 o 130).
 
-## Installation
+## Instalación
 
-Python 3.12 was used.
+El análisis se ejecutó con Python 3.12.
 
 ```bash
 python -m venv .venv
-# Windows: .venv\Scripts\activate    Linux/macOS: source .venv/bin/activate
+# Activación en Windows: .venv\Scripts\activate
+# Activación en Linux o macOS: source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Running the analysis
+## Ejecución del análisis
 
-Run the scripts from the repository root, in this order:
+Ejecute los scripts desde la raíz del repositorio en el orden indicado.
 
 ```bash
 python src/01_get_sources.py
@@ -52,33 +44,26 @@ python src/04_analysis.py
 python src/04b_education.py
 ```
 
-Steps 01 and 01b download current versions of online sources, so a later download could differ slightly from the
-files used in the study (their SHA-256 values are recorded in `data/raw/PROVENANCE.json`).
+El paso 01 descarga las versiones disponibles al momento de la consulta y el paso 01b recupera la red vial histórica. Los archivos obtenidos en una descarga posterior podrían diferir de los utilizados en el estudio. Cada ejecución registra los valores SHA-256 de los archivos descargados en `data/raw/PROVENANCE.json`.
 
-| Step | Script | What it does | Main output |
+| Paso | Script | Operación | Salida principal |
 |---|---|---|---|
-| 01 | `01_get_sources.py` | Downloads the block IPM, OpenStreetMap facilities and roads, and the REPS open data | `data/raw/` |
-| 01b | `01b_get_roads_2018.py` | Downloads the OpenStreetMap roads as they were on 1 July 2018 | `data/raw/osm_roads_2018.json` |
-| 02 | `02_geocode_facilities.py` | Local geocoding of the IPS addresses on the street grid (no external geocoder) | `data/processed/facilities.csv` |
-| 03 | `03_blocks_network.py` | Urban blocks, census population and health questions, road graph and network distances (2026) | `data/processed/blocks.csv`, `ill_persons.csv` |
-| 03b | `03b_network_2018.py` | Network of 2018 (sites open by mid-2018, general medicine, emergency, hospitals), 2018 roads, random displacement of the sites | `data/processed/blocks_2018.csv` |
-| 04 | `04_analysis.py` | Distance by IPM quintile, Spearman correlations, global and bivariate local Moran (with false discovery rate), logistic models of formal care-seeking and sensitivity analyses | `results/summary.json`, `care_models.csv`, `quintiles.csv`, `lisa.csv` |
-| 04b | `04b_education.py` | Low adult education by block, household educational climate, co-accumulation and care-seeking models with interaction | `results/education_*.csv`, `education_summary.json` |
+| 01 | `01_get_sources.py` | Descarga del IPM por manzana, los equipamientos y las vías de OpenStreetMap y los datos abiertos del REPS | `data/raw/` |
+| 01b | `01b_get_roads_2018.py` | Descarga de la red vial de OpenStreetMap al 1 de julio de 2018 | `data/raw/osm_roads_2018.json` |
+| 02 | `02_geocode_facilities.py` | Geocodificación local de las direcciones de las sedes de IPS a partir de la nomenclatura vial | `data/processed/facilities.csv` |
+| 03 | `03_blocks_network.py` | Integración de las manzanas urbanas con la población y las respuestas censales de salud. Construcción del grafo vial y cálculo de distancias para 2026 | `data/processed/blocks.csv`, `data/processed/ill_persons.csv` |
+| 03b | `03b_network_2018.py` | Reconstrucción de la red de 2018 (todas las sedes, consulta de medicina general, urgencias y hospitales o clínicas) y desplazamiento aleatorio de las sedes | `data/processed/blocks_2018.csv` |
+| 04 | `04_analysis.py` | Comparación de distancias por quintil del IPM, correlaciones de Spearman, estadísticos de Moran global y local bivariado, modelos logísticos de búsqueda de atención y análisis de sensibilidad | `results/summary.json`, `results/care_models.csv`, `results/quintiles.csv`, `results/lisa.csv` |
+| 04b | `04b_education.py` | Análisis del bajo logro educativo adulto por manzana y del clima educativo del hogar, su concentración espacial conjunta con la distancia y los modelos de búsqueda de atención con interacción | `results/education_*.csv`, `results/education_summary.json` |
 
-## Definitions
+## Definiciones
 
-- Block poverty: census IPM of the block (percentage of persons in multidimensionally poor households).
-- Formal care: persons with a health problem in the last 30 days (`P_ENFERMO` = 1) who went to their health insurer
-  or to a private doctor (`P_QUEHIZO_PPAL` in 1–2); responses 3–9 are other responses; 0, 11 and 99 are excluded.
-- Stratum: socioeconomic stratum of the dwelling (`VA1_ESTRATO`).
-- Education (`P_NIVEL_ANOSR`): primary or less (10, 1, 2), secondary (3–6), tertiary (7–9). Household educational
-  climate: highest level among the members aged 25 or more.
-- Network distance: multi-source Dijkstra on the undirected road graph (largest connected component), plus the
-  snapping distances of blocks and sites.
+- **Pobreza por manzana.** IPM censal de la manzana (porcentaje de personas que viven en hogares en situación de pobreza multidimensional).
+- **Atención formal.** Entre quienes declararon un problema de salud en los 30 días previos al censo (`P_ENFERMO` = 1), se consideró atención formal acudir a la entidad aseguradora de salud o a un médico particular (`P_QUEHIZO_PPAL` = 1 o 2). Los códigos 3 a 9 se agruparon como otras respuestas y se excluyeron los códigos 0, 11 y 99.
+- **Estrato.** Estrato socioeconómico de la vivienda (`VA1_ESTRATO`).
+- **Logro educativo.** Los niveles de `P_NIVEL_ANOSR` se agruparon en primaria o menos (10, 1 y 2), secundaria (3 a 6) y educación superior (7 a 9). El clima educativo del hogar se definió como el nivel más alto alcanzado por sus miembros de 25 años o más.
+- **Distancia por la red vial.** Se calculó con el algoritmo de Dijkstra de múltiples orígenes sobre el mayor componente conexo del grafo vial no dirigido. Se sumaron las distancias de conexión de las manzanas y de las sedes a los nodos de la red.
 
-## Uncertainty
+## Análisis de sensibilidad e incertidumbre
 
-Local Moran statistics use 999 conditional permutations, with the neighbours of each permutation drawn without
-replacement (seed 20261120), and the Benjamini-Hochberg false discovery rate. Several sites snapped to the same road
-node keep the minimum connection distance. The random displacement of the sites uses 50 draws per radius. Logistic models use standard errors clustered by block (and by census section and sector in sensitivity
-analyses). Predicted probabilities use the delta method.
+Los estadísticos locales de Moran se evaluaron con 999 permutaciones condicionales (semilla 20261120). Los vecinos de cada permutación se seleccionaron sin reemplazo y la tasa de falsos descubrimientos se controló con el procedimiento de Benjamini-Hochberg. Si varias sedes se conectaban al mismo nodo vial, se conservó la mínima distancia de conexión. En el análisis de sensibilidad con desplazamientos aleatorios de las sedes se generaron 50 realizaciones por radio. Los errores estándar de los modelos logísticos se agruparon por manzana y, en los análisis de sensibilidad, por sección y por sector censal. Las probabilidades predichas se estimaron con intervalos de confianza obtenidos mediante el método delta.
